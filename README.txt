@@ -3,9 +3,9 @@ from the IMU acceleration data to compare with LiDAR odometry taken from the top
 
 The filtering is done with a moving average filter with a window size of 300. To run the IMU data filtering node
 run this command:
-
-    ros2 run imu_filter_py filter
-
+'''
+ros2 run imu_filter_py filter
+'''
 The filtered data will be published to a topic named /imu/filtered.
 
 To check if the filtering is done correctly the odometry_check node plots the trajectory calculated from IMU by
