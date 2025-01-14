@@ -1,4 +1,4 @@
-This package has been tested on ROS2 Humble and has two functionalities, filtering IMU acceleration data and getting IMU trajectory
+This is a ROS2 package and it has been tested on ROS2 Humble. It has two functionalities, filtering IMU acceleration data and getting IMU trajectory
 from the IMU acceleration data to compare with LiDAR odometry taken from the topics provided by LeGO-LOAM-SR. 
 
 The filtering is done with a moving average filter with a window size of 300. To run the IMU data filtering node
