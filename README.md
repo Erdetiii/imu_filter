@@ -1,25 +1,67 @@
-# IMU linear acceleration data filtering and testing
-This is a ROS2 package and it has been tested on ROS2 Humble. It has two functionalities, filtering IMU acceleration data and getting IMU trajectory
-from the IMU acceleration data to compare with LiDAR odometry taken from the topics provided by LeGO-LOAM-SR. 
+# IMU Linear Acceleration Data Filtering and Testing
 
-The filtering is done with a moving average filter with a window size of 300. To run the IMU data filtering node
-run this command:
+This ROS2 package has been developed and tested on ROS2 Humble. It provides two key functionalities:
 
-    ros2 run imu_filter_py filter
+1. **Filtering IMU Acceleration Data**: Applies a moving average filter to smooth the IMU acceleration data.
+2. **Comparing IMU and LiDAR Trajectories**: Computes and visualizes the trajectory derived from filtered IMU data alongside LiDAR odometry from the LeGO-LOAM-SR package.
 
-The filtered data will be published to a topic named /imu/filtered.
+---
 
-To check if the filtering is done correctly the odometry_check node plots the trajectory calculated from IMU by
-double integrating the acceleration data which gives us position and LiDAR odometry created by the LeGO-LOAM-SR package.
-To use the odometry_check node first you need to run the filtering node(if you want to check the raw IMU data
-change the topic that the filtering node subscribes to to /imu/data), then launch LeGO-LOAM-SR with this command:
+## Filtering IMU Data
 
-    ros2 launch lego_loam_sr run.launch.py
+The filtering process uses a moving average filter with a window size of 300. To run the IMU filtering node, use the following command:
 
-If you have recorded data in a rosbag file start playing it and then run the odometry_check node with this command:
+```bash
+ros2 run imu_filter_py filter
+```
 
-    ros2 run imu_filter_py odom_compare
+The filtered IMU data is published to the `/imu/filtered` topic.
 
-Let the .db3 file play for how ever long you need it to and then you can press ctrl + c in the terminal where odometry_check
-is running, a plot with two graphs will come up showing where in one of them there will be the IMU trajectory and in the
-other one will be LiDAR odometry.
+### Important Notes:
+
+- By default, the node subscribes to the `/imu/data` topic. If you want to test raw IMU data, ensure that this subscription remains unchanged.
+
+---
+
+## Visualizing and Comparing IMU and LiDAR Odometry
+
+The `odometry_check` node calculates the IMU trajectory by double integrating the filtered acceleration data (to obtain position). It then compares this trajectory to LiDAR odometry from the LeGO-LOAM-SR package.
+
+### Steps to Use the `odometry_check` Node:
+
+1. **Run the IMU Filtering Node**:
+   Ensure the filtering node is running if you want to use filtered IMU data. If you prefer to test with raw IMU data, modify the subscription topic of the filtering node to `/imu/data`.
+
+2. **Launch LeGO-LOAM-SR**:
+   Start the LeGO-LOAM-SR package using the following command:
+
+   ```bash
+   ros2 launch lego_loam_sr run.launch.py
+   ```
+
+3. **Play Recorded Data (if applicable):**
+   If you have recorded data in a `.db3` ROS bag file, play it using:
+
+   ```bash
+   ros2 bag play <your_rosbag_file>.db3
+   ```
+
+4. **Run the ****`odometry_check`**** Node**:
+   Execute the following command:
+
+   ```bash
+   ros2 run imu_filter_py odom_compare
+   ```
+
+5. **View the Plot**:
+
+   - Allow the `.db3` file to play for as long as necessary.
+   - Stop the `odometry_check` node by pressing `Ctrl + C` in the terminal.
+   - A plot with two graphs will appear:
+     - **Graph 1**: IMU-derived trajectory.
+     - **Graph 2**: LiDAR odometry from LeGO-LOAM-SR.
+
+---
+
+This configuration provides a robust framework for evaluating the performance of the IMU filtering process. By comparing the IMU-derived trajectory against the LiDAR-based odometry, you can gain valuable insights into the accuracy and reliability of the system.
+
